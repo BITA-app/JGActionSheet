@@ -54,7 +54,7 @@
 #define kArrowBaseWidth 20.0f
 #define kArrowHeight 10.0f
 
-#define kShadowRadius 4.0f
+#define kShadowRadius 0.0f  //default 4.0f
 #define kShadowOpacity 0.2f
 
 #define kFixedWidth 320.0f
@@ -316,7 +316,7 @@ static BOOL disableCustomEasing = NO;
         self.layer.shadowOpacity = 0.0f;
     }
     else {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = rgb(246.f, 246.f, 246.f);
         self.layer.cornerRadius = kHostsCornerRadius;
         
         self.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -358,21 +358,21 @@ static BOOL disableCustomEasing = NO;
     
     if (buttonStyle == JGActionSheetButtonStyleDefault) {
         if (!font) {
-            font = [UIFont systemFontOfSize:15.0f];
+            font = [UIFont systemFontOfSize:18.0f];
         }
         titleColor = [UIColor blackColor];
         
-        backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f];
-        borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+        backgroundColor = [UIColor whiteColor];
+        borderColor = rgb(201.f, 201.f, 201.f);
     }
     else if (buttonStyle == JGActionSheetButtonStyleCancel) {
         if (!font) {
-            font = [UIFont boldSystemFontOfSize:15.0f];
+            font = [UIFont systemFontOfSize:18.0f];
         }
         titleColor = [UIColor blackColor];
         
-        backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f];
-        borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+        backgroundColor = rgb(246.f, 246.f, 246.f);
+        borderColor = [UIColor clearColor];
     }
     else if (buttonStyle == JGActionSheetButtonStyleRed) {
         if (!font) {
@@ -406,10 +406,18 @@ static BOOL disableCustomEasing = NO;
         }
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
         img.hidden = NO;
-        titleColor = [UIColor redColor];
+        titleColor = [UIColor blackColor];
         
-        backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f];
-        borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+        backgroundColor = [UIColor whiteColor];
+        borderColor = rgb(201.f, 201.f, 201.f);
+    }else if (buttonStyle == JGActionSheetButtonStyleChangeFont){
+        if (!font) {
+            font = [UIFont systemFontOfSize:18.0f];
+        }
+        titleColor = [UIColor lightGrayColor];
+        
+        backgroundColor = [UIColor whiteColor];
+        borderColor = rgb(201.f, 201.f, 201.f);
     }
 
     
@@ -446,7 +454,7 @@ static BOOL disableCustomEasing = NO;
 }
 
 - (CGRect)layoutForWidth:(CGFloat)width {
-    CGFloat buttonHeight = 40.0f;
+    CGFloat buttonHeight = 45.0f;
     CGFloat spacing = kSpacing;
     
     CGFloat height = 0.0f;
@@ -487,12 +495,17 @@ static BOOL disableCustomEasing = NO;
     for (UIButton *button in self.buttons) {
         height += spacing;
         
-        button.frame = (CGRect){{spacing, height}, {width-spacing*2.0f, buttonHeight}};
+        button.frame = (CGRect){{spacing+spacing, height+spacing}, {width-spacing*4.0f, buttonHeight}};
+        
+        if ([self.buttons count] == 1&& self.tag == 1) {
+            button.frame = (CGRect){CGPointMake(0, 15), {CGRectGetWidth([UIScreen mainScreen].bounds)-4.0f*kSpacing, buttonHeight+kSpacing}};
+        }
         
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
-        img.center = button.center;
+        CGPoint _center = button.center;
+        _center = CGPointMake(_center.x+40, _center.y);
+        img.center = _center;
         CGRect frame = img.frame;
-        frame.origin.x = 200;
         frame.size = CGSizeMake(13, 10);
         img.frame = frame;
         
@@ -559,7 +572,7 @@ static BOOL disableCustomEasing = NO;
         _scrollViewHost.backgroundColor = [UIColor clearColor];
         
         _scrollView = [[UIScrollView alloc] init];
-        _scrollView.backgroundColor = [UIColor clearColor];
+        _scrollView.backgroundColor = rgb(246.f, 246.f, 246.f);
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.showsVerticalScrollIndicator = NO;
         
@@ -680,7 +693,12 @@ static BOOL disableCustomEasing = NO;
         }
         
         section.frame = f;
-        
+        if (section.buttons.count == 1 && section.tag == 1) {
+            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{CGRectGetWidth([UIScreen mainScreen].bounds) ,1}}];
+            topLine.image = [UIImage imageNamed:@"more_box_line.png"];
+            [_scrollView addSubview:topLine];
+        }
+
         height += CGRectGetHeight(f)+spacing;
     }
     

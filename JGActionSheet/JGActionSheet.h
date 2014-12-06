@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, JGActionSheetButtonStyle) {
     JGActionSheetButtonStyleRed,
     JGActionSheetButtonStyleGreen,
     JGActionSheetButtonStyleBlue,
+    JGActionSheetButtonStyleChangeFont,
     JGActionSheetButtonStyleSelected
 };
 
