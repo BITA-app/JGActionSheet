@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, JGActionSheetButtonStyle) {
     JGActionSheetButtonStyleGreen,
     JGActionSheetButtonStyleBlue,
     JGActionSheetButtonStyleChangeFont,
-    JGActionSheetButtonStyleSelected
+    JGActionSheetButtonStyleSelected,
 };
 
 /**
@@ -34,8 +34,19 @@ typedef NS_ENUM(NSUInteger, JGActionSheetArrowDirection) {
     JGActionSheetArrowDirectionBottom,
 };
 
-
-
+/**
+ *  actionSheet section button 展现形式
+ */
+typedef NS_ENUM(NSUInteger, JGActionSheetShowType){
+    /**
+     * 分离式：button互相有固定间距
+     */
+    JGActionSheetShowTypeSeparate,
+    /**
+     *合并式：button合并成一个整体的UI
+     */
+    JGActionSheetShowTypeMerge,
+};
 
 
 
@@ -45,6 +56,8 @@ typedef NS_ENUM(NSUInteger, JGActionSheetArrowDirection) {
  @sa JGActionSheet.
  */
 @interface JGActionSheetSection : UIView
+
+@property (nonatomic, assign) JGActionSheetShowType showType;
 
 /**
  The label containing the title of the section.
@@ -82,13 +95,18 @@ typedef NS_ENUM(NSUInteger, JGActionSheetArrowDirection) {
 + (instancetype)sectionWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles titleFontNumbers:(NSArray *)fontNumbers buttonStyle:(JGActionSheetButtonStyle)buttonStyle;
 
 /**
+ 设置title字号大小 : 需要传入fontNumbers数组, 字号(NSNumber)，以及显示的类型（button合并或者分离）.
+ */
++ (instancetype)sectionWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles titleFontNumbers:(NSArray *)fontNumbers buttonStyle:(JGActionSheetButtonStyle)buttonStyle showType:(JGActionSheetShowType)showType;
+
+/**
  Initializes the section with buttons.
  @param title The title of the section. (Optional)
  @param message The message of the section. (Optional)
  @param buttonTitles The titles for the buttons in the section.
  @param buttonStyle The style to apply to the buttons. This can be altered later with the @c setButtonStyle:forButtonAtIndex: method
  */
-- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonStyle:(JGActionSheetButtonStyle)buttonStyle buttonTitleFonts:(NSArray *)buttonTitleFonts;
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonStyle:(JGActionSheetButtonStyle)buttonStyle buttonTitleFonts:(NSArray *)buttonTitleFonts showType:(JGActionSheetShowType)showType;
 
 /**
  Convenience initializer for the @c initWithTitle:message:contentView: method.

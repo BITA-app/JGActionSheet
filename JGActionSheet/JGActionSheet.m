@@ -189,18 +189,24 @@ static BOOL disableCustomEasing = NO;
 #pragma mark Initializers
 
 + (instancetype)sectionWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonStyle:(JGActionSheetButtonStyle)buttonStyle {
-    return [[self alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonStyle:buttonStyle buttonTitleFonts:nil];
+    return [[self alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonStyle:buttonStyle buttonTitleFonts:nil showType:JGActionSheetShowTypeSeparate];
+}
+
++ (instancetype)sectionWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles titleFontNumbers:(NSArray *)fontNumbers buttonStyle:(JGActionSheetButtonStyle)buttonStyle showType:(JGActionSheetShowType)showType
+{
+    return [[self alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonStyle:buttonStyle buttonTitleFonts:fontNumbers showType:showType];
 }
 
 + (instancetype)sectionWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles titleFontNumbers:(NSArray *)fontNumbers buttonStyle:(JGActionSheetButtonStyle)buttonStyle
 {
-    return [[self alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonStyle:buttonStyle buttonTitleFonts:fontNumbers];
+    return [[self alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonStyle:buttonStyle buttonTitleFonts:fontNumbers showType:JGActionSheetShowTypeSeparate];
 }
 
-- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonStyle:(JGActionSheetButtonStyle)buttonStyle buttonTitleFonts:(NSArray *)buttonTitleFonts {
+- (instancetype)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonStyle:(JGActionSheetButtonStyle)buttonStyle buttonTitleFonts:(NSArray *)buttonTitleFonts showType:(JGActionSheetShowType)showType{
     self = [super init];
     
     if (self) {
+        self.showType = showType;
         if (title) {
             UILabel *titleLabel = [[UILabel alloc] init];
             titleLabel.backgroundColor = [UIColor clearColor];
@@ -241,18 +247,27 @@ static BOOL disableCustomEasing = NO;
                 UIFont *_font = [buttonTitleFonts objectAtIndex:[buttonTitles indexOfObject:str]];
                 UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selected.png"]];
                 img.hidden = YES;
-                
+
                 UIButton *b = [self makeButtonWithTitle:str style:buttonStyle font:_font];
                 b.tag = index;
-                
+
                 [self addSubview:b];
                 [self addSubview:img];
-
+                
                 [buttons addObject:b];
                 [images addObject:img];
                 
+
+                
                 index++;
             }
+            
+            if (self.showType == JGActionSheetShowTypeMerge) {
+                UIButton *centerBtn = [buttons objectAtIndex:1];
+                    centerBtn.layer.cornerRadius = 0.f;
+                    [self bringSubviewToFront:centerBtn];
+            }
+            
             _selectedImgs = images.copy;
             _buttons = buttons.copy;
         }
@@ -372,7 +387,7 @@ static BOOL disableCustomEasing = NO;
         titleColor = [UIColor blackColor];
         
         backgroundColor = rgb(246.f, 246.f, 246.f);
-        borderColor = [UIColor clearColor];
+        borderColor = backgroundColor;
     }
     else if (buttonStyle == JGActionSheetButtonStyleRed) {
         if (!font) {
@@ -406,6 +421,7 @@ static BOOL disableCustomEasing = NO;
         }
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
         img.hidden = NO;
+        [self bringSubviewToFront:img];
         titleColor = [UIColor blackColor];
         
         backgroundColor = [UIColor whiteColor];
@@ -431,7 +447,7 @@ static BOOL disableCustomEasing = NO;
     button.layer.borderColor = borderColor.CGColor;
 }
 
-- (UIButton *)makeButtonWithTitle:(NSString *)title style:(JGActionSheetButtonStyle)style font:(UIFont *)font {
+- (UIButton *)makeButtonWithTitle:(NSString *)title style:(JGActionSheetButtonStyle)style font:(UIFont *)font{
     UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
     
     b.layer.cornerRadius = 2.0f;
@@ -493,9 +509,22 @@ static BOOL disableCustomEasing = NO;
     }
     
     for (UIButton *button in self.buttons) {
-        height += spacing;
+        if (self.showType != JGActionSheetShowTypeMerge) {
+            height += spacing;
+        }
         
         button.frame = (CGRect){{spacing+spacing, height+spacing}, {width-spacing*4.0f, buttonHeight}};
+        if (self.showType == JGActionSheetShowTypeMerge) {
+            button.frame = (CGRect){{spacing+spacing, height+spacing+2}, {width-spacing*4.0f, buttonHeight}};
+            NSInteger btnIndex = [self.buttons indexOfObject:button];
+            if (btnIndex != 0 && btnIndex != [self.buttons count]-1) {
+                button.frame = (CGRect){{spacing+spacing, height+3.5}, {width-spacing*4.0f, buttonHeight}};
+            }else if (btnIndex == [self.buttons count]-1){
+                button.frame = (CGRect){{spacing+spacing, height-.5}, {width-spacing*4.0f, buttonHeight+2}};
+
+            }
+        }
+        
         
         if ([self.buttons count] == 1&& self.tag == 1) {
             button.frame = (CGRect){CGPointMake(0, 15), {CGRectGetWidth([UIScreen mainScreen].bounds)-4.0f*kSpacing, buttonHeight+kSpacing}};
@@ -552,12 +581,13 @@ static BOOL disableCustomEasing = NO;
 @dynamic visible;
 
 #pragma mark Initializers
-
-+ (instancetype)actionSheetWithSections:(NSArray *)sections {
++ (instancetype)actionSheetWithSections:(NSArray *)sections
+{
     return [[self alloc] initWithSections:sections];
 }
 
-- (instancetype)initWithSections:(NSArray *)sections {
+- (instancetype)initWithSections:(NSArray *)sections
+{
     NSAssert(sections.count > 0, @"Must at least provide 1 section");
     
     self = [super init];
@@ -604,6 +634,7 @@ static BOOL disableCustomEasing = NO;
     
     return self;
 }
+
 
 #pragma mark Overrides
 
