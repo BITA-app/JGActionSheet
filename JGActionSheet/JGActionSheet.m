@@ -384,7 +384,7 @@ static BOOL disableCustomEasing = NO;
         if (!font) {
             font = [UIFont systemFontOfSize:18.0f];
         }
-        titleColor = [UIColor blackColor];
+        titleColor = rgb(51.f, 51.f, 51.f);
         
         backgroundColor = rgb(246.f, 246.f, 246.f);
         borderColor = backgroundColor;
@@ -422,7 +422,7 @@ static BOOL disableCustomEasing = NO;
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
         img.hidden = NO;
         [self bringSubviewToFront:img];
-        titleColor = [UIColor blackColor];
+        titleColor = rgb(51.f, 51.f, 51.f);
         
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
@@ -430,7 +430,7 @@ static BOOL disableCustomEasing = NO;
         if (!font) {
             font = [UIFont systemFontOfSize:18.0f];
         }
-        titleColor = [UIColor lightGrayColor];
+        titleColor = rgb(145.f, 145.f, 145.f);
         
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
