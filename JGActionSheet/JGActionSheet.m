@@ -384,7 +384,7 @@ static BOOL disableCustomEasing = NO;
         if (!font) {
             font = [UIFont systemFontOfSize:18.0f];
         }
-        titleColor = rgb(51.f, 51.f, 51.f);
+        titleColor = [UIColor blackColor];
         
         backgroundColor = rgb(246.f, 246.f, 246.f);
         borderColor = backgroundColor;
@@ -422,7 +422,7 @@ static BOOL disableCustomEasing = NO;
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
         img.hidden = NO;
         [self bringSubviewToFront:img];
-        titleColor = rgb(51.f, 51.f, 51.f);
+        titleColor = [UIColor blackColor];
         
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
@@ -430,7 +430,7 @@ static BOOL disableCustomEasing = NO;
         if (!font) {
             font = [UIFont systemFontOfSize:18.0f];
         }
-        titleColor = rgb(145.f, 145.f, 145.f);
+        titleColor = [UIColor lightGrayColor];
         
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
@@ -527,7 +527,7 @@ static BOOL disableCustomEasing = NO;
         
         
         if ([self.buttons count] == 1&& self.tag == 1) {
-            button.frame = (CGRect){CGPointMake(0, 15), {CGRectGetWidth([UIScreen mainScreen].bounds)-4.0f*kSpacing, buttonHeight+kSpacing}};
+            button.frame = (CGRect){CGPointMake(spacing+spacing, 15), {width-4.0f*kSpacing, buttonHeight+kSpacing}};
         }
         
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
@@ -725,8 +725,8 @@ static BOOL disableCustomEasing = NO;
         
         section.frame = f;
         if (section.buttons.count == 1 && section.tag == 1) {
-            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{CGRectGetWidth([UIScreen mainScreen].bounds) ,1}}];
-            topLine.image = [UIImage imageNamed:@"more_box_line.png"];
+            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{width+40 ,1}}];
+            topLine.image = [[UIImage imageNamed:@"more_box_line.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:1];
             [_scrollView addSubview:topLine];
         }
 
