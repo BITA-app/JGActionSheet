@@ -527,7 +527,7 @@ static BOOL disableCustomEasing = NO;
         
         
         if ([self.buttons count] == 1&& self.tag == 1) {
-            button.frame = (CGRect){CGPointMake(spacing+spacing, 15), {width-4.0f*kSpacing, buttonHeight+kSpacing}};
+            button.frame = (CGRect){CGPointMake(0, 15), {width, buttonHeight+kSpacing}};
         }
         
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
@@ -725,8 +725,8 @@ static BOOL disableCustomEasing = NO;
         
         section.frame = f;
         if (section.buttons.count == 1 && section.tag == 1) {
-            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{width+40 ,1}}];
-            topLine.image = [[UIImage imageNamed:@"more_box_line.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:1];
+            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{CGRectGetWidth(frame) ,1}}];
+            topLine.image = [UIImage imageNamed:@"more_box_line.png"];
             [_scrollView addSubview:topLine];
         }
 
