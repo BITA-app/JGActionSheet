@@ -211,9 +211,9 @@ static BOOL disableCustomEasing = NO;
             UILabel *titleLabel = [[UILabel alloc] init];
             titleLabel.backgroundColor = [UIColor clearColor];
             titleLabel.textAlignment = NSTextAlignmentCenter;
-            titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-            titleLabel.textColor = [UIColor blackColor];
-            titleLabel.numberOfLines = 1;
+            titleLabel.font = [UIFont systemFontOfSize:12.0f];
+            titleLabel.textColor = [UIColor lightGrayColor];
+            titleLabel.numberOfLines = 0;
             
             titleLabel.text = title;
             
@@ -387,7 +387,7 @@ static BOOL disableCustomEasing = NO;
         titleColor = [UIColor blackColor];
         
         backgroundColor = rgb(246.f, 246.f, 246.f);
-        borderColor = backgroundColor;
+        borderColor = rgb(201.f, 201.f, 201.f);
     }
     else if (buttonStyle == JGActionSheetButtonStyleRed) {
         if (!font) {
@@ -431,6 +431,14 @@ static BOOL disableCustomEasing = NO;
             font = [UIFont systemFontOfSize:18.0f];
         }
         titleColor = [UIColor lightGrayColor];
+        
+        backgroundColor = [UIColor whiteColor];
+        borderColor = rgb(201.f, 201.f, 201.f);
+    }else if (buttonStyle == JGActionSheetButtonStyleBlueTitleFont){
+        if (!font) {
+            font = [UIFont systemFontOfSize:18.0f];
+        }
+        titleColor = [UIColor colorWithRed:36./255.f green:103./255.f blue:213./255.f alpha:1.0];
         
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
@@ -478,10 +486,20 @@ static BOOL disableCustomEasing = NO;
     if (self.titleLabel) {
         height += spacing;
         
-        [self.titleLabel sizeToFit];
-        height += CGRectGetHeight(self.titleLabel.frame);
+//        [self.titleLabel sizeToFit];
+//        height += CGRectGetHeight(self.titleLabel.frame);
+//        
+//        self.titleLabel.frame = (CGRect){{spacing, spacing}, {width-spacing*2.0f, CGRectGetHeight(self.titleLabel.frame)}};
         
-        self.titleLabel.frame = (CGRect){{spacing, spacing}, {width-spacing*2.0f, CGRectGetHeight(self.titleLabel.frame)}};
+        
+        CGSize maxLabelSize = {width-spacing*2.0f, width};
+        
+        
+        CGFloat titleLabelHeight = [self.titleLabel.text sizeWithFont:self.titleLabel.font constrainedToSize:maxLabelSize lineBreakMode:self.titleLabel.lineBreakMode].height;
+        
+        height += titleLabelHeight;
+        
+        self.titleLabel.frame = (CGRect){{spacing, spacing}, {width-spacing*2.0f, titleLabelHeight}};
     }
     
     if (self.messageLabel) {
@@ -525,9 +543,10 @@ static BOOL disableCustomEasing = NO;
             }
         }
         
-        
+        //取消按钮
         if ([self.buttons count] == 1&& self.tag == 1) {
-            button.frame = (CGRect){CGPointMake(0, 15), {width, buttonHeight+kSpacing}};
+            button.frame = (CGRect){CGPointMake(0, 15), {CGRectGetWidth([UIScreen mainScreen].bounds), buttonHeight+kSpacing}};
+            button.layer.borderWidth = 0.f;
         }
         
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
@@ -725,7 +744,8 @@ static BOOL disableCustomEasing = NO;
         
         section.frame = f;
         if (section.buttons.count == 1 && section.tag == 1) {
-            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{CGRectGetWidth(frame) ,1}}];
+            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{CGRectGetWidth([UIScreen mainScreen].bounds) ,1}}];
+            section.frame = CGRectMake(0, section.frame.origin.y, [[UIScreen mainScreen] bounds].size.width, section.frame.size.height);
             topLine.image = [UIImage imageNamed:@"more_box_line.png"];
             [_scrollView addSubview:topLine];
         }
