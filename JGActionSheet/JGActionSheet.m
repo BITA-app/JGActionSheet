@@ -545,7 +545,11 @@ static BOOL disableCustomEasing = NO;
         
         //取消按钮
         if ([self.buttons count] == 1&& self.tag == 1) {
-            button.frame = (CGRect){CGPointMake(0, 15), {CGRectGetWidth([UIScreen mainScreen].bounds), buttonHeight+kSpacing}};
+            CGFloat viewWidth = width + kSpacing*4;
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+                viewWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
+            }
+            button.frame = (CGRect){CGPointMake(0, 15), {viewWidth, buttonHeight+kSpacing}};
             button.layer.borderWidth = 0.f;
         }
         
@@ -744,8 +748,12 @@ static BOOL disableCustomEasing = NO;
         
         section.frame = f;
         if (section.buttons.count == 1 && section.tag == 1) {
-            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{CGRectGetWidth([UIScreen mainScreen].bounds) ,1}}];
-            section.frame = CGRectMake(0, section.frame.origin.y, [[UIScreen mainScreen] bounds].size.width, section.frame.size.height);
+            CGFloat viewWidth = width + kSpacing*4;
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+                viewWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
+            }
+            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{viewWidth ,1}}];
+            section.frame = CGRectMake(0, section.frame.origin.y, viewWidth, section.frame.size.height);
             topLine.image = [UIImage imageNamed:@"more_box_line.png"];
             [_scrollView addSubview:topLine];
         }
