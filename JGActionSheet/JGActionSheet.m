@@ -422,7 +422,7 @@ static BOOL disableCustomEasing = NO;
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
         img.hidden = NO;
         [self bringSubviewToFront:img];
-        titleColor = [UIColor blackColor];
+        titleColor = rgb(44.f, 112.f, 223.f);;
         
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
@@ -525,16 +525,16 @@ static BOOL disableCustomEasing = NO;
         }
         
         button.frame = (CGRect){{spacing+spacing, height+spacing}, {width-spacing*4.0f, buttonHeight}};
-        if (self.showType == JGActionSheetShowTypeMerge) {
-            button.frame = (CGRect){{spacing+spacing, height+spacing+2}, {width-spacing*4.0f, buttonHeight}};
-            NSInteger btnIndex = [self.buttons indexOfObject:button];
-            if (btnIndex != 0 && btnIndex != [self.buttons count]-1) {
-                button.frame = (CGRect){{spacing+spacing, height+3.5}, {width-spacing*4.0f, buttonHeight}};
-            }else if (btnIndex == [self.buttons count]-1){
-                button.frame = (CGRect){{spacing+spacing, height-.5}, {width-spacing*4.0f, buttonHeight+2}};
-                
-            }
-        }
+        //        if (self.showType == JGActionSheetShowTypeMerge) {
+        //            button.frame = (CGRect){{spacing+spacing, height+spacing+2}, {width-spacing*4.0f, buttonHeight}};
+        //            NSInteger btnIndex = [self.buttons indexOfObject:button];
+        //            if (btnIndex != 0 && btnIndex != [self.buttons count]-1) {
+        //                button.frame = (CGRect){{spacing+spacing, height+3.5}, {width-spacing*4.0f, buttonHeight}};
+        //            }else if (btnIndex == [self.buttons count]-1){
+        //                button.frame = (CGRect){{spacing+spacing, height-.5}, {width-spacing*4.0f, buttonHeight+2}};
+        //
+        //            }
+        //        }
         
         //取消按钮
         if ([self.buttons count] == 1&& self.tag == 1) {
