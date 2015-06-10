@@ -247,25 +247,25 @@ static BOOL disableCustomEasing = NO;
                 UIFont *_font = [buttonTitleFonts objectAtIndex:[buttonTitles indexOfObject:str]];
                 UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selected.png"]];
                 img.hidden = YES;
-
+                
                 UIButton *b = [self makeButtonWithTitle:str style:buttonStyle font:_font];
                 b.tag = index;
-
+                
                 [self addSubview:b];
                 [self addSubview:img];
                 
                 [buttons addObject:b];
                 [images addObject:img];
                 
-
+                
                 
                 index++;
             }
             
             if (self.showType == JGActionSheetShowTypeMerge) {
                 UIButton *centerBtn = [buttons objectAtIndex:1];
-                    centerBtn.layer.cornerRadius = 0.f;
-                    [self bringSubviewToFront:centerBtn];
+                centerBtn.layer.cornerRadius = 0.f;
+                [self bringSubviewToFront:centerBtn];
             }
             
             _selectedImgs = images.copy;
@@ -373,20 +373,20 @@ static BOOL disableCustomEasing = NO;
     
     if (buttonStyle == JGActionSheetButtonStyleDefault) {
         if (!font) {
-            font = [UIFont systemFontOfSize:18.0f];
+            font = [UIFont systemFontOfSize:16.0f];
         }
-        titleColor = [UIColor blackColor];
+        titleColor = rgb(44.f, 112.f, 223.f);
         
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
     }
     else if (buttonStyle == JGActionSheetButtonStyleCancel) {
         if (!font) {
-            font = [UIFont systemFontOfSize:18.0f];
+            font = [UIFont systemFontOfSize:16.0f];
         }
-        titleColor = [UIColor blackColor];
+        titleColor = rgb(44.f, 112.f, 223.f);;
         
-        backgroundColor = rgb(246.f, 246.f, 246.f);
+        backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
     }
     else if (buttonStyle == JGActionSheetButtonStyleRed) {
@@ -430,7 +430,7 @@ static BOOL disableCustomEasing = NO;
         if (!font) {
             font = [UIFont systemFontOfSize:18.0f];
         }
-        titleColor = [UIColor lightGrayColor];
+        titleColor = rgb(44.f, 112.f, 223.f);
         
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
@@ -443,7 +443,7 @@ static BOOL disableCustomEasing = NO;
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
     }
-
+    
     
     [button setTitleColor:titleColor forState:UIControlStateNormal];
     
@@ -460,7 +460,6 @@ static BOOL disableCustomEasing = NO;
     
     b.layer.cornerRadius = 2.0f;
     b.layer.masksToBounds = YES;
-    b.layer.borderWidth = 1.0f;
     
     [b setTitle:title forState:UIControlStateNormal];
     
@@ -479,18 +478,12 @@ static BOOL disableCustomEasing = NO;
 
 - (CGRect)layoutForWidth:(CGFloat)width {
     CGFloat buttonHeight = 45.0f;
-    CGFloat spacing = kSpacing;
+    CGFloat spacing = 0;
     
     CGFloat height = 0.0f;
     
     if (self.titleLabel) {
         height += spacing;
-        
-//        [self.titleLabel sizeToFit];
-//        height += CGRectGetHeight(self.titleLabel.frame);
-//        
-//        self.titleLabel.frame = (CGRect){{spacing, spacing}, {width-spacing*2.0f, CGRectGetHeight(self.titleLabel.frame)}};
-        
         
         CGSize maxLabelSize = {width-spacing*2.0f, width};
         
@@ -539,7 +532,7 @@ static BOOL disableCustomEasing = NO;
                 button.frame = (CGRect){{spacing+spacing, height+3.5}, {width-spacing*4.0f, buttonHeight}};
             }else if (btnIndex == [self.buttons count]-1){
                 button.frame = (CGRect){{spacing+spacing, height-.5}, {width-spacing*4.0f, buttonHeight+2}};
-
+                
             }
         }
         
@@ -549,9 +542,13 @@ static BOOL disableCustomEasing = NO;
             if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
                 viewWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
             }
-            button.frame = (CGRect){CGPointMake(0, 15), {viewWidth, buttonHeight+kSpacing}};
+            button.frame = (CGRect){CGPointMake(0, 0), {viewWidth, buttonHeight}};
             button.layer.borderWidth = 0.f;
         }
+        
+        UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, 0),{width ,0.5}}];
+        topLine.image = [UIImage imageNamed:@"more_box_line.png"];
+        [button addSubview:topLine];
         
         UIImageView *img = [self.selectedImgs objectAtIndex:[self.buttons indexOfObject:button]];
         CGPoint _center = button.center;
@@ -625,7 +622,7 @@ static BOOL disableCustomEasing = NO;
         _scrollViewHost.backgroundColor = [UIColor clearColor];
         
         _scrollView = [[UIScrollView alloc] init];
-        _scrollView.backgroundColor = rgb(246.f, 246.f, 246.f);
+        _scrollView.backgroundColor = [UIColor whiteColor];
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.showsVerticalScrollIndicator = NO;
         
@@ -727,11 +724,11 @@ static BOOL disableCustomEasing = NO;
     
     CGFloat width = CGRectGetWidth(frame);
     
-    if (!continuous) {
-        width -= 2.0f*spacing;
-    }
+    //    if (!continuous) {
+    //        width -= 2.0f*spacing;
+    //    }
     
-    CGFloat height = (continuous ? 0.0f : spacing);
+    CGFloat height = 0;
     
     for (JGActionSheetSection *section in self.sections) {
         if (initial) {
@@ -743,22 +740,20 @@ static BOOL disableCustomEasing = NO;
         f.origin.y = height;
         
         if (!continuous) {
-            f.origin.x = spacing;
+            f.origin.x = 0;
+        }
+        
+        CGFloat viewWidth = width;
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+            viewWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
         }
         
         section.frame = f;
         if (section.buttons.count == 1 && section.tag == 1) {
-            CGFloat viewWidth = width + kSpacing*4;
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-                viewWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
-            }
-            UIImageView *topLine = [[UIImageView alloc] initWithFrame:(CGRect){CGPointMake(0, f.origin.y+15),{viewWidth ,1}}];
             section.frame = CGRectMake(0, section.frame.origin.y, viewWidth, section.frame.size.height);
-            topLine.image = [UIImage imageNamed:@"more_box_line.png"];
-            [_scrollView addSubview:topLine];
         }
-
-        height += CGRectGetHeight(f)+spacing;
+        
+        height += CGRectGetHeight(f);
     }
     
     if (continuous) {
