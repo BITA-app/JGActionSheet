@@ -247,25 +247,25 @@ static BOOL disableCustomEasing = NO;
                 UIFont *_font = [buttonTitleFonts objectAtIndex:[buttonTitles indexOfObject:str]];
                 UIImageView *img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"selected.png"]];
                 img.hidden = YES;
-                
+
                 UIButton *b = [self makeButtonWithTitle:str style:buttonStyle font:_font];
                 b.tag = index;
-                
+
                 [self addSubview:b];
                 [self addSubview:img];
                 
                 [buttons addObject:b];
                 [images addObject:img];
                 
-                
+
                 
                 index++;
             }
             
             if (self.showType == JGActionSheetShowTypeMerge) {
                 UIButton *centerBtn = [buttons objectAtIndex:1];
-                centerBtn.layer.cornerRadius = 0.f;
-                [self bringSubviewToFront:centerBtn];
+                    centerBtn.layer.cornerRadius = 0.f;
+                    [self bringSubviewToFront:centerBtn];
             }
             
             _selectedImgs = images.copy;
@@ -443,7 +443,7 @@ static BOOL disableCustomEasing = NO;
         backgroundColor = [UIColor whiteColor];
         borderColor = rgb(201.f, 201.f, 201.f);
     }
-    
+
     
     [button setTitleColor:titleColor forState:UIControlStateNormal];
     
@@ -483,16 +483,18 @@ static BOOL disableCustomEasing = NO;
     CGFloat height = 0.0f;
     
     if (self.titleLabel) {
-        height += spacing;
+        CGFloat topPadding = 10;
+        CGFloat leading = 15;
+        height += topPadding;
         
-        CGSize maxLabelSize = {width-spacing*2.0f, width};
+        CGSize maxLabelSize = {width - leading * 2.0f, width};
         
         
         CGFloat titleLabelHeight = [self.titleLabel.text sizeWithFont:self.titleLabel.font constrainedToSize:maxLabelSize lineBreakMode:self.titleLabel.lineBreakMode].height;
         
-        height += titleLabelHeight;
+        height += titleLabelHeight + topPadding;
         
-        self.titleLabel.frame = (CGRect){{spacing, spacing}, {width-spacing*2.0f, titleLabelHeight}};
+        self.titleLabel.frame = (CGRect){{leading, topPadding}, {width - leading * 2.0f, titleLabelHeight}};
     }
     
     if (self.messageLabel) {
@@ -525,16 +527,16 @@ static BOOL disableCustomEasing = NO;
         }
         
         button.frame = (CGRect){{spacing+spacing, height+spacing}, {width-spacing*4.0f, buttonHeight}};
-        //        if (self.showType == JGActionSheetShowTypeMerge) {
-        //            button.frame = (CGRect){{spacing+spacing, height+spacing+2}, {width-spacing*4.0f, buttonHeight}};
-        //            NSInteger btnIndex = [self.buttons indexOfObject:button];
-        //            if (btnIndex != 0 && btnIndex != [self.buttons count]-1) {
-        //                button.frame = (CGRect){{spacing+spacing, height+3.5}, {width-spacing*4.0f, buttonHeight}};
-        //            }else if (btnIndex == [self.buttons count]-1){
-        //                button.frame = (CGRect){{spacing+spacing, height-.5}, {width-spacing*4.0f, buttonHeight+2}};
-        //
-        //            }
-        //        }
+//        if (self.showType == JGActionSheetShowTypeMerge) {
+//            button.frame = (CGRect){{spacing+spacing, height+spacing+2}, {width-spacing*4.0f, buttonHeight}};
+//            NSInteger btnIndex = [self.buttons indexOfObject:button];
+//            if (btnIndex != 0 && btnIndex != [self.buttons count]-1) {
+//                button.frame = (CGRect){{spacing+spacing, height+3.5}, {width-spacing*4.0f, buttonHeight}};
+//            }else if (btnIndex == [self.buttons count]-1){
+//                button.frame = (CGRect){{spacing+spacing, height-.5}, {width-spacing*4.0f, buttonHeight+2}};
+//
+//            }
+//        }
         
         //取消按钮
         if ([self.buttons count] == 1&& self.tag == 1) {
@@ -724,9 +726,9 @@ static BOOL disableCustomEasing = NO;
     
     CGFloat width = CGRectGetWidth(frame);
     
-    //    if (!continuous) {
-    //        width -= 2.0f*spacing;
-    //    }
+//    if (!continuous) {
+//        width -= 2.0f*spacing;
+//    }
     
     CGFloat height = 0;
     
@@ -752,7 +754,7 @@ static BOOL disableCustomEasing = NO;
         if (section.buttons.count == 1 && section.tag == 1) {
             section.frame = CGRectMake(0, section.frame.origin.y, viewWidth, section.frame.size.height);
         }
-        
+
         height += CGRectGetHeight(f);
     }
     
