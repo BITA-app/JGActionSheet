@@ -538,13 +538,9 @@ static BOOL disableCustomEasing = NO;
 //            }
 //        }
         
-        //取消按钮
-        if ([self.buttons count] == 1&& self.tag == 1) {
-            CGFloat viewWidth = width + kSpacing*4;
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-                viewWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
-            }
-            button.frame = (CGRect){CGPointMake(0, 0), {viewWidth, buttonHeight}};
+        // 取消按钮
+        if ([self.buttons count] == 1 && self.tag == 1) {
+            button.frame = (CGRect){CGPointMake(0, 0), {width, buttonHeight}};
             button.layer.borderWidth = 0.f;
         }
         
